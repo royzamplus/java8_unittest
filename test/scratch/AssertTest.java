@@ -7,9 +7,9 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -132,6 +132,56 @@ public class AssertTest {
         assertThat("account balance is 100", account.getBalance(), equalTo(50));
     }
 
+    @Ignore
+    @ExpectToFail
+    @Test
+    public void assertFailure() {
+        assertTrue(account.getName().startsWith("xyz"));
+    }
+
+    @Ignore
+    @ExpectToFail
+    @Test
+    public void matchesFailure() {
+        assertThat(account.getName(), startsWith("xyz"));
+    }
+
+    @Test
+    public void variousMatcherTests() {
+        Account account = new Account("my big fat acct");
+        assertThat(account.getName(), is(equalTo("my big fat acct")));
+        assertThat(account.getName(), allOf(startsWith("my"), endsWith("acct")));
+        assertThat(account.getName(), anyOf(startsWith("my"), endsWith("acct")));
+        assertThat(account.getName(), not(equalTo("plunderings")));
+        assertThat(account.getName(), is(not(nullValue())));
+        assertThat(account.getName(), is(notNullValue()));
+        assertThat(account.getName(), isA(String.class));
+
+        assertThat(account.getName(), is(notNullValue()));
+        assertThat(account.getName(), equalTo("my big fat acct"));
+    }
+
+    @Test
+    public void sameInstance() {
+        Account a = new Account("a");
+        Account aPrime = new Account("a");
+        assertThat(a, not(org.hamcrest.CoreMatchers.sameInstance(aPrime)));
+    }
+
+    @Test
+    public void moreMatcherTests() {
+        Account account = new Account(null);
+        assertThat(account.getName(), is(nullValue()));
+    }
+
+    @Ignore
+    @ExpectToFail
+    @Test
+    public void classicAssertions() {
+        Account account = new Account("acct namex");
+        assertEquals("acct name", account.getName());
+    }
+
     @Test(expected = InsufficientFundsException.class)
     public void throwsWhenWithdrawingTooMuch() {
         account.withdraw(100);
@@ -156,6 +206,17 @@ public class AssertTest {
         writer.close();
     }
 
+    @After
+    public void deleteForReadsFromTestFile() {
+        new File("test.txt").delete();
+    }
+
+    @Test
+    @Ignore("don't forget me!")
+    public void somethingWeCannotHandleRightNow() {
+        // ...
+    }
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -165,5 +226,10 @@ public class AssertTest {
         thrown.expectMessage("balance only 0");
 
         account.withdraw(100);
+    }
+
+    @Test
+    public void doubles() {
+        assertEquals(9.7, 10.0 - 0.3, 0.005);
     }
 }
