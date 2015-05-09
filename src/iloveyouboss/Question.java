@@ -19,6 +19,10 @@ public abstract class Question {
       this.answerChoices = answerChoices;
    }
    
+   public int getId() {
+      return id;
+   }
+   
    public String getText() {
       return text;
    }

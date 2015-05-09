@@ -6,12 +6,8 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
 ***/
-package scratch;
+package transmission;
 
-import java.lang.annotation.*;
-
-@Retention(RetentionPolicy.RUNTIME)
- @Target({ElementType.METHOD})
-
-public @interface ExpectToFail {
+public interface Moveable {
+   int currentSpeedInMph();
 }

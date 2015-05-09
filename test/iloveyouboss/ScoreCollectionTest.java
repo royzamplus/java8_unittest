@@ -1,26 +1,51 @@
+/***
+ * Excerpted from "Pragmatic Unit Testing in Java with JUnit",
+ * published by The Pragmatic Bookshelf.
+ * Copyrights apply to this code. It may not be used to create training material, 
+ * courses, books, articles, and the like. Contact us if you are in doubt.
+ * We make no guarantees that this code is fit for any purpose. 
+ * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
+***/
 package iloveyouboss;
 
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*; 
+import org.junit.*;
 
-/**
- * Created by liudi on 4/23/15.
- */
 public class ScoreCollectionTest {
+   private ScoreCollection collection;
 
-    @Test
-    public void answersArithmeticMeanOfTwoNumbers() {
-        // Arrange
-        ScoreCollection collection = new ScoreCollection();
-        collection.add(() -> 5);
-        collection.add(() -> 7);
+   @Before
+   public void create() {
+      collection = new ScoreCollection();
+   }
 
-        // Act
-        int actualResult = collection.arithmeticMean();
+   @Test
+   public void answersArithmeticMeanOfTwoNumbers() {
+      collection.add(() -> 5);
+      collection.add(() -> 7);
+      
+      int actualResult = collection.arithmeticMean();
+      
+      assertThat(actualResult, equalTo(6));
+   }
+   
+   @Test(expected=IllegalArgumentException.class)
+   public void throwsExceptionWhenAddingNull() {
+      collection.add(null);
+   }
+   
+   @Test
+   public void answersZeroWhenNoElementsAdded() {
+      assertThat(collection.arithmeticMean(), equalTo(0));
+   }
 
-        // Assert
-        assertThat(actualResult, equalTo(6));
-    }
+   @Test
+   public void doesNotProperlyHandleIntegerOverflow() {
+      collection.add(() -> Integer.MAX_VALUE); 
+      collection.add(() -> 1); 
+      
+      assertTrue(collection.arithmeticMean() < 0);
+   }
 }
+

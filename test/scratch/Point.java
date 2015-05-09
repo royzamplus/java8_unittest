@@ -8,10 +8,17 @@
 ***/
 package scratch;
 
-import java.lang.annotation.*;
+public class Point {
+   public final double x;
+   public final double y;
 
-@Retention(RetentionPolicy.RUNTIME)
- @Target({ElementType.METHOD})
-
-public @interface ExpectToFail {
+   public Point(double x, double y) {
+      this.x = x;
+      this.y = y;
+   }
+   
+   @Override
+   public String toString() {
+      return String.format("(%s, %s)", x, y);
+   }
 }

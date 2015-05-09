@@ -6,12 +6,22 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
 ***/
-package scratch;
+package transmission;
 
-import java.lang.annotation.*;
+public class Car implements Moveable {
 
-@Retention(RetentionPolicy.RUNTIME)
- @Target({ElementType.METHOD})
+   private int mph;
 
-public @interface ExpectToFail {
+   @Override
+   public int currentSpeedInMph() {
+      return mph;
+   }
+
+   public void accelerateTo(int mph) {
+      this.mph = mph;
+   }
+
+   public void brakeToStop() {
+      mph = 0;
+   }
 }

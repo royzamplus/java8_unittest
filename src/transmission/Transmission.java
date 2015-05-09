@@ -6,12 +6,25 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
 ***/
-package scratch;
+package transmission;
 
-import java.lang.annotation.*;
+public class Transmission {
 
-@Retention(RetentionPolicy.RUNTIME)
- @Target({ElementType.METHOD})
+   private Gear gear;
+   private Moveable moveable;
 
-public @interface ExpectToFail {
+   public Transmission(Moveable moveable) {
+      this.moveable = moveable;
+   }
+
+   public void shift(Gear gear) {
+      // begs for a state-machine implementation
+      if (moveable.currentSpeedInMph() > 0 && gear == Gear.PARK) return; 
+      this.gear = gear;
+   }
+
+   public Gear getGear() {
+      return gear;
+   }
+
 }

@@ -9,9 +9,14 @@
 package iloveyouboss;
 
 import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-public class Profile { 
+public class Profile {
+
    private Map<String,Answer> answers = new HashMap<>();
+   // ...
+
    private int score;
    private String name;
 
@@ -23,37 +28,55 @@ public class Profile {
       return name;
    }
 
-   public void add(Answer answer) { 
+   public void add(Answer answer) {
       answers.put(answer.getQuestionText(), answer);
    }
    
-   public boolean matches(Criteria criteria) { 
+   public boolean matches(Criteria criteria) {
       score = 0;
       
       boolean kill = false;
       boolean anyMatches = false;
-
-      for (Criterion criterion: criteria) {   
+      for (Criterion criterion: criteria) {
          Answer answer = answers.get(
-               criterion.getAnswer().getQuestionText()); 
+               criterion.getAnswer().getQuestionText());
          boolean match = 
-               criterion.getWeight() == Weight.DontCare || 
+               criterion.getWeight() == Weight.DontCare ||
                answer.match(criterion.getAnswer());
-
-         if (!match && criterion.getWeight() == Weight.MustMatch) {  
+         if (!match && criterion.getWeight() == Weight.MustMatch) {
             kill = true;
          }
-         if (match) {         
+         if (match) {
             score += criterion.getWeight().getValue();
          }
-         anyMatches |= match;  
+         anyMatches |= match;
+         // ...
       }
-      if (kill)       
+      if (kill)
          return false;
-      return anyMatches; 
+      return anyMatches;
    }
 
    public int score() {
       return score;
+   }
+
+   public List<Answer> classicFind(Predicate<Answer> pred) {
+      List<Answer> results = new ArrayList<Answer>();
+      for (Answer answer: answers.values())
+         if (pred.test(answer))
+            results.add(answer);
+      return results;
+   }
+   
+   @Override
+   public String toString() {
+     return name;
+   }
+
+   public List<Answer> find(Predicate<Answer> pred) {
+      return answers.values().stream()
+            .filter(pred)
+            .collect(Collectors.toList());
    }
 }

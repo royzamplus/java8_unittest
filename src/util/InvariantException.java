@@ -6,12 +6,12 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
 ***/
-package scratch;
+package util;
 
-import java.lang.annotation.*;
+public class InvariantException extends RuntimeException {
+   public InvariantException(String message) {
+      super(message);
+   }
 
-@Retention(RetentionPolicy.RUNTIME)
- @Target({ElementType.METHOD})
-
-public @interface ExpectToFail {
+   private static final long serialVersionUID = 1L;
 }
