@@ -13,9 +13,10 @@ import static org.hamcrest.CoreMatchers.*;
 import static scratch.ConstrainsSidesTo.constrainsSidesTo;
 import org.junit.*;
 
+
 public class RectangleTest {
    private Rectangle rectangle;
-   
+
    @After
    public void ensureInvariant() {
       assertThat(rectangle, constrainsSidesTo(100));
@@ -26,7 +27,7 @@ public class RectangleTest {
       rectangle = new Rectangle(new Point(5, 5), new Point (15, 10));
       assertThat(rectangle.area(), equalTo(50));
    }
-   
+
    @Ignore
    @ExpectToFail
    @Test

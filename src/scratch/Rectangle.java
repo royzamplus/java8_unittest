@@ -23,7 +23,7 @@ public class Rectangle {
 
    public int area() {
       return (int)(Math.abs(origin.x - opposite.x) *
-            Math.abs(origin.y - opposite.y));
+              Math.abs(origin.y - opposite.y));
    }
 
    public void setOppositeCorner(Point opposite) {
@@ -37,7 +37,7 @@ public class Rectangle {
    public Point opposite() {
       return opposite;
    }
-   
+
    @Override
    public String toString() {
       return "Rectangle(origin " + origin + " opposite " + opposite + ")";
