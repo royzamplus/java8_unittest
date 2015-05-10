@@ -36,25 +36,31 @@ public class Profile {
       score = 0;
       
       boolean kill = false;
-      boolean anyMatches = false;
+
       for (Criterion criterion: criteria) {
-         Answer answer = answers.get(
-               criterion.getAnswer().getQuestionText());
-         boolean match = 
-               criterion.getWeight() == Weight.DontCare ||
-               answer.match(criterion.getAnswer());
+         boolean match = criterion.matches(answerMatching(criterion));
+
          if (!match && criterion.getWeight() == Weight.MustMatch) {
             kill = true;
          }
          if (match) {
             score += criterion.getWeight().getValue();
          }
-         anyMatches |= match;
-         // ...
       }
       if (kill)
          return false;
+      return anyMatches(criteria);
+   }
+
+   private boolean anyMatches(Criteria criteria) {
+      boolean anyMatches = false;
+      for (Criterion criterion: criteria)
+         anyMatches |= criterion.matches(answerMatching(criterion));
       return anyMatches;
+   }
+
+   private Answer answerMatching(Criterion criterion) {
+      return answers.get(criterion.getAnswer().getQuestionText());
    }
 
    public int score() {
